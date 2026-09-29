@@ -3,6 +3,7 @@ package network.webtech.labspringmvc.controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
+import java.util.Optional;
 
 import network.webtech.labspringmvc.models.Produto;
 import network.webtech.labspringmvc.services.ProdutoService;
@@ -19,10 +20,29 @@ public class Produtos {
         return produtoService.listarProdutos();
     }
 
+    @GetMapping("/{id}")
+    public Optional<Produto> buscarPorId(@PathVariable String id) {
+        return produtoService.buscarPorId(id);
+    }
+
     @PostMapping
     public Produto adicionarProduto(@RequestBody Produto produto) {
         return produtoService.adicionarProduto(produto);
     }
 
-    // Implemente métodos para atualizar, deletar e buscar produtos por id...
+    @DeleteMapping("/{id}")
+    public String deletarProduto(@PathVariable String id) {
+        boolean result = produtoService.deletarProduto(id);
+        if (result) {
+            return "Produto deletado";
+        } else {
+            return "Produto nao encontrado";
+        }
+    }
+
+    @PutMapping("/{id}")
+    public Produto atualizarProduto( @PathVariable String id, @RequestBody Produto produto) {
+        return produtoService.atualizarProduto(id, produto);
+    }
+
 }
